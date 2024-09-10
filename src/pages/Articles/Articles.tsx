@@ -35,27 +35,30 @@ const Articles: React.FC = () => {
         <Loader />
       ) : (
         <>
-          {articles && articles.length ? (
-            <>
-              <div className="flex lg:flex-row flex-col justify-center gap-10">
-                <div className="lg:w-72 w-full">
-                  <FilterBar />
-                </div>
+          <div className="flex lg:flex-row flex-col justify-center gap-10">
+            <div className="lg:w-72 w-full">
+              <FilterBar />
+            </div>
 
-                <div className="flex flex-col">
-                  {displayedArticles.map((article: Article) => (
-                    <ArticleCard key={article.title} article={article} />
-                  ))}
-                </div>
+            {displayedArticles.length > 0 ? (
+              <div className="flex flex-col">
+                {displayedArticles.map((article: Article) => (
+                  <ArticleCard key={article.title} article={article} />
+                ))}
               </div>
-              <Pagination
-                currentPage={currentPage}
-                totalPages={totalPages}
-                onPageChange={handlePageChange}
-              />
-            </>
-          ) : <p className="text-center text-black font-bold text-lg">Articles Not Found.</p>
-        }
+            ) : (
+              <div className="flex flex-col justify-center">
+                <p className="text-center text-black font-bold text-lg">
+                  Articles Not Found.
+                </p>
+              </div>
+            )}
+          </div>
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={handlePageChange}
+          />
         </>
       )}
     </div>

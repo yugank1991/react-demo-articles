@@ -8,7 +8,7 @@ interface ArticleCardProps {
 
 const ArticleCard: React.FC<ArticleCardProps> = ({ article }) => {
   const getImageSrc = (url: string) => {
-    return !url ? `${import.meta.env.VITE_IMAGE_URL}${url}` : placeHolderImg;
+    return url ? `${import.meta.env.VITE_IMAGE_URL}${url}` : placeHolderImg;
   };
 
   return (

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { RootState } from './store';
+import { RootState } from "./store";
 import { Article } from "./src/interface";
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 
@@ -102,29 +102,46 @@ const articlesSlice = createSlice({
   },
 });
 
-export const { toggleAuthorFilter, toggleCategoryFilter, toggleSortOrderFilter } = articlesSlice.actions;
+export const {
+  toggleAuthorFilter,
+  toggleCategoryFilter,
+  toggleSortOrderFilter,
+} = articlesSlice.actions;
 
 export default articlesSlice.reducer;
 
 export const selectFilteredArticles = (state: RootState) => {
-  const { items, selectedAuthors, selectedCategories, selectedSortOrders } = state.articles;
-
+  const { items, selectedAuthors, selectedCategories, selectedSortOrders } =
+    state.articles;
+  let filteredArticles: Article[] = [...items];
   // Filter by selected authors
-  let filteredArticles = items.filter(article =>
-    (selectedAuthors.length === 0 || selectedAuthors.includes(article.author)) &&
-    (selectedCategories.length === 0 || selectedCategories.includes(article.source))
-  );
+  if (selectedCategories.length > 0) {
+    filteredArticles = items.filter((article) =>
+      selectedCategories.includes(article.source)
+    );
+  }
+
+  if (selectedAuthors.length > 0) {
+    filteredArticles = filteredArticles.filter((article) =>
+      selectedAuthors.includes(article.author)
+    );
+  }
+
+  if (selectedCategories.length === 0 && selectedAuthors.length === 0) {
+    filteredArticles = [...items];
+  }
 
   // Sort articles based on sortOrder
-
-  if(selectedSortOrders.length) {
+  if (selectedSortOrders.length) {
     selectedSortOrders.forEach((sortOrder) => {
-      if (sortOrder === 'date') {
-        filteredArticles.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
-      } else if (sortOrder === 'title') {
+      if (sortOrder === "date") {
+        filteredArticles.sort(
+          (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+        );
+      } else if (sortOrder === "title") {
         filteredArticles.sort((a, b) => a.title.localeCompare(b.title));
       }
-    })
+    });
   }
   return filteredArticles;
 };

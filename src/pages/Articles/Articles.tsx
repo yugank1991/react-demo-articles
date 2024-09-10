@@ -30,38 +30,46 @@ const Articles: React.FC = () => {
   );
 
   return (
-    <div className="container mx-auto my-12 px-10">
-      {status === "loading" ? (
-        <Loader />
+    <>
+      {status === "failed" ? (
+        <p className="text-black font-bold text-lg h-screen flex items-center justify-center">
+          Failed to fetch articles !!
+        </p>
       ) : (
-        <>
-          <div className="flex lg:flex-row flex-col justify-center gap-10">
-            <div className="lg:w-72 w-full">
-              <FilterBar />
-            </div>
+        <div className="container mx-auto my-12 px-10">
+          {status === "loading" ? (
+            <Loader />
+          ) : (
+            <>
+              <div className="flex lg:flex-row flex-col gap-10">
+                <div className="lg:w-72 w-full">
+                  <FilterBar />
+                </div>
 
-            {displayedArticles.length > 0 ? (
-              <div className="flex flex-col">
-                {displayedArticles.map((article: Article) => (
-                  <ArticleCard key={article.title} article={article} />
-                ))}
+                {displayedArticles.length > 0 ? (
+                  <div className="flex flex-col">
+                    {displayedArticles.map((article: Article) => (
+                      <ArticleCard key={article.title} article={article} />
+                    ))}
+                  </div>
+                ) : (
+                  <div className="flex flex-col mx-auto justify-center">
+                    <p className="text-center text-black font-bold text-lg">
+                      No result found for Selection
+                    </p>
+                  </div>
+                )}
               </div>
-            ) : (
-              <div className="flex flex-col justify-center">
-                <p className="text-center text-black font-bold text-lg">
-                  Articles Not Found.
-                </p>
-              </div>
-            )}
-          </div>
-          <Pagination
-            currentPage={currentPage}
-            totalPages={totalPages}
-            onPageChange={handlePageChange}
-          />
-        </>
+              <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={handlePageChange}
+              />
+            </>
+          )}
+        </div>
       )}
-    </div>
+    </>
   );
 };
 
